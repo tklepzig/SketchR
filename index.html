@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="msapplication-tap-highlight" content="no"/>
+        <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=10.0, width=device-width"/>
+        <title>Sketch</title>
+        <link rel="stylesheet" href="./bower_components/lcars.web/dist/lcars.web.min.css" charset="utf-8">
+        <style media="screen">
+            .canvas-container {
+                position: absolute !important;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: auto !important;
+                height: auto !important;
+            }
+
+        </style>
+    </head>
+    <body class="layout-v layout-fill">
+        <div class="panel top right orange flex col-lg row-xxs">
+            <div class="column">
+                <button type="button" id="toggleDrawMode" class="button orange flex-20">Switch to Selection Mode</button>
+                <button type="button" id="deleteSelected" class="button dim red flex-20">Delete Selection</button>
+
+                <button type="button" id="undo" class="button flex-20">Undo</button>
+
+                <div class="area flex orange"></div>
+                <button type="button" id="clear" class="button dark red flex-10">Clear</button>
+            </div>
+            <div class="content">
+                <canvas id="c"></canvas>
+            </div>
+        </div>
+
+        <script src="./bower_components/fabric.js/dist/fabric.min.js" charset="utf-8"></script>
+        <script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+        <script src="./bower_components/lcars.web/dist/lcars.web.min.js" charset="utf-8"></script>
+        <script>
+            var downEvent;
+            var moveEvent;
+            var upEvent;
+
+            if ('ontouchstart' in window) {
+                downEvent = 'touchstart';
+                moveEvent = 'touchmove';
+                upEvent = 'touchend';
+            } else if ('pointerdown' in window) {
+                downEvent = 'pointerdown';
+                moveEvent = 'pointermove';
+                upEvent = 'pointerup';
+            } else {
+                downEvent = 'mousedown';
+                moveEvent = 'mousemove';
+                upEvent = 'mouseup';
+            }
+
+            var canvas = new fabric.Canvas('c', {
+                backgroundColor: '#0d0d0d',
+                selectionColor: 'rgba(55, 134, 255, 0.4)',
+                isDrawingMode: true,
+                freeDrawingCursor: 'pointer'
+            });
+
+            canvas.freeDrawingBrush.color = '#f90';
+            canvas.freeDrawingBrush.width = 2;
+            canvas.freeDrawingBrush.shadowBlur = 0;
+
+            window.addEventListener('resize', resizeCanvas, false);
+
+            $(document).on('keyup', function(e) {
+                if (e.keyCode == 46) {
+                    deleteSelection();
+                }
+            });
+
+            function deleteSelection() {
+                if (canvas.getActiveGroup()) {
+                    canvas.getActiveGroup().forEachObject(function(o) {
+                        canvas.remove(o);
+                    });
+                    canvas.discardActiveGroup().renderAll();
+                } else {
+                    canvas.remove(canvas.getActiveObject());
+                }
+            }
+
+            function resizeCanvas() {
+                var width = $('.canvas-container').width();
+                var height = $('.canvas-container').height();
+
+                canvas.setWidth(width);
+                canvas.setHeight(height);
+
+                canvas.renderAll();
+            }
+
+            if (typeof localStorage.sketchData !== 'undefined') {
+                canvas.loadFromJSON(localStorage.sketchData);
+            }
+
+            canvas.on('object:added', function() {
+                localStorage.sketchData = JSON.stringify(canvas);
+            });
+            canvas.on('object:removed', function() {
+                localStorage.sketchData = JSON.stringify(canvas);
+            });
+
+            resizeCanvas();
+            canvas.renderAll();
+
+            $('#clear').on(downEvent, function() {
+                canvas.clear();
+            });
+
+            $('#toggleDrawMode').on(downEvent, function() {
+                if ($('#toggleDrawMode').hasClass('blue')) {
+                    $('#toggleDrawMode').text('Switch to Selection Mode');
+                } else {
+                    $('#toggleDrawMode').text('Switch to Draw Mode');
+                }
+                $('#toggleDrawMode').toggleClass('orange blue');
+                canvas.isDrawingMode = !canvas.isDrawingMode;
+            });
+
+            $('#deleteSelected').on(downEvent, function() {
+                deleteSelection();
+            });
+
+            $('#undo').on(downEvent, function() {
+                if (canvas.getObjects().length === 0) {
+                    return;
+                }
+
+                var lastItemIndex = (canvas.getObjects().length - 1);
+                var item = canvas.item(lastItemIndex);
+                canvas.remove(item);
+                canvas.renderAll();
+            });
+
+            canvas.on('object:selected', function(o) {
+                var activeObj = o.target;
+                activeObj.set({'borderColor': '#3786ff', 'cornerColor': '#3786ff', cornerSize: 20, selectionLineWidth: 10});
+            });
+        </script>
+    </body>
+</html>

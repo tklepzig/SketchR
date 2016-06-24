@@ -1,0 +1,19 @@
+{
+  "name": "sketchr",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fabric.js": "fabric#^1.6.2",
+    "lcars.web": "^0.3.11"
+  }
+}
