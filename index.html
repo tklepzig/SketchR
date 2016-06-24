@@ -16,6 +16,12 @@
                 bottom: 0;
                 width: auto !important;
                 height: auto !important;
+                background-image: url('./grid.png');
+                background-repeat: repeat;
+            }
+
+            .hidden {
+                display: none;
             }
 
         </style>
@@ -23,10 +29,10 @@
     <body class="layout-v layout-fill">
         <div class="panel top right orange flex col-lg row-xxs">
             <div class="column">
-                <button type="button" id="toggleDrawMode" class="button orange flex-20">Switch to Selection Mode</button>
-                <button type="button" id="deleteSelected" class="button dim red flex-20">Delete Selection</button>
+                <button type="button" id="toggleDrawMode" class="button orange flex-20">Selection Mode</button>
+                <button type="button" id="deleteSelected" class="hidden button dim red flex-10">Delete Selection</button>
 
-                <button type="button" id="undo" class="button flex-20">Undo</button>
+                <button type="button" id="undo" class="button dim orange flex-20">Undo</button>
 
                 <div class="area flex orange"></div>
                 <button type="button" id="clear" class="button dark red flex-10">Clear</button>
@@ -59,7 +65,7 @@
             }
 
             var canvas = new fabric.Canvas('c', {
-                backgroundColor: '#0d0d0d',
+                backgroundColor: 'transparent',
                 selectionColor: 'rgba(55, 134, 255, 0.4)',
                 isDrawingMode: true,
                 freeDrawingCursor: 'pointer'
@@ -118,11 +124,12 @@
 
             $('#toggleDrawMode').on(downEvent, function() {
                 if ($('#toggleDrawMode').hasClass('blue')) {
-                    $('#toggleDrawMode').text('Switch to Selection Mode');
+                    $('#toggleDrawMode').text('Selection Mode');
                 } else {
-                    $('#toggleDrawMode').text('Switch to Draw Mode');
+                    $('#toggleDrawMode').text('Back');
                 }
-                $('#toggleDrawMode').toggleClass('orange blue');
+                $('#deleteSelected').toggleClass('hidden');
+                $('#toggleDrawMode').toggleClass('orange blue flex-10 flex-20');
                 canvas.isDrawingMode = !canvas.isDrawingMode;
             });
 
