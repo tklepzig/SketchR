@@ -24,12 +24,22 @@
                 display: none;
             }
 
+            .blink {
+                animation: blink-light-orange 1s steps(1) infinite;
+            }
+            @keyframes blink-light-orange {
+                50% {
+                    background: #ffc466;
+                }
+            }
+
         </style>
     </head>
     <body class="layout-v layout-fill">
         <div class="panel top right orange flex col-lg row-xxs">
             <div class="column">
                 <button type="button" id="toggleDrawMode" class="button orange flex-20">Selection Mode</button>
+                <div id="space" class="hidden area flex-20 orange"></div>
                 <button type="button" id="deleteSelected" class="hidden button dim red flex-10">Delete Selection</button>
 
                 <button type="button" id="undo" class="button dim orange flex-20">Undo</button>
@@ -123,13 +133,18 @@
             });
 
             $('#toggleDrawMode').on(downEvent, function() {
-                if ($('#toggleDrawMode').hasClass('blue')) {
+                if ($('#toggleDrawMode').hasClass('blink')) {
                     $('#toggleDrawMode').text('Selection Mode');
+                    canvas.freeDrawingCursor = 'pointer';
                 } else {
                     $('#toggleDrawMode').text('Back');
+                    canvas.freeDrawingCursor = 'default';
+
                 }
                 $('#deleteSelected').toggleClass('hidden');
-                $('#toggleDrawMode').toggleClass('orange blue flex-10 flex-20');
+                $('#undo').toggleClass('hidden');
+                $('#space').toggleClass('hidden');
+                $('#toggleDrawMode').toggleClass('blink flex-10 flex-20');
                 canvas.isDrawingMode = !canvas.isDrawingMode;
             });
 
