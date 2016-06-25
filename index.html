@@ -23,16 +23,6 @@
             .hidden {
                 display: none;
             }
-
-            .blink {
-                animation: blink-light-orange 1s steps(1) infinite;
-            }
-            @keyframes blink-light-orange {
-                50% {
-                    background: #ffc466;
-                }
-            }
-
         </style>
     </head>
     <body class="layout-v layout-fill">
@@ -133,7 +123,7 @@
             });
 
             $('#toggleDrawMode').on(downEvent, function() {
-                if ($('#toggleDrawMode').hasClass('blink')) {
+                if ($('#toggleDrawMode').hasClass('blink-light-orange')) {
                     $('#toggleDrawMode').text('Selection Mode');
                     canvas.freeDrawingCursor = 'pointer';
                 } else {
@@ -144,7 +134,7 @@
                 $('#deleteSelected').toggleClass('hidden');
                 $('#undo').toggleClass('hidden');
                 $('#space').toggleClass('hidden');
-                $('#toggleDrawMode').toggleClass('blink flex-10 flex-20');
+                $('#toggleDrawMode').toggleClass('blink-light-orange flex-10 flex-20');
                 canvas.isDrawingMode = !canvas.isDrawingMode;
             });
 
