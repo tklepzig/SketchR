@@ -14,6 +14,10 @@
   ],
   "dependencies": {
     "fabric.js": "fabric#^1.6.2",
-    "lcars.web": "^0.3.11"
+    "lcars.web": "0.3.12",
+    "fullscreenjs": "^0.0.2"
+  },
+  "resolutions": {
+    "jquery": "~2.2.0"
   }
 }

@@ -23,6 +23,7 @@
             .hidden {
                 display: none;
             }
+
         </style>
     </head>
     <body class="layout-v layout-fill">
@@ -34,7 +35,7 @@
 
                 <button type="button" id="undo" class="button dim orange flex-20">Undo</button>
 
-                <div class="area flex orange"></div>
+                <button class="fullscreen button flex orange"></button>
                 <button type="button" id="clear" class="button dark red flex-10">Clear</button>
             </div>
             <div class="content">
@@ -44,8 +45,13 @@
 
         <script src="./bower_components/fabric.js/dist/fabric.min.js" charset="utf-8"></script>
         <script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+        <script src="./bower_components/fullscreenjs/fullscreen.min.js" charset="utf-8"></script>
         <script src="./bower_components/lcars.web/dist/lcars.web.min.js" charset="utf-8"></script>
         <script>
+            $('.fullscreen').on('click', function() {
+                fullscreen.toggle(document.body);
+            });
+
             var downEvent;
             var moveEvent;
             var upEvent;
